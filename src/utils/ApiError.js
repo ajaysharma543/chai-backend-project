@@ -21,7 +21,6 @@ class ApiError extends Error {
 }
 export {ApiError}
 
-
 // class ApiError extends Error { ... }
 // You’re creating a custom class called ApiError.
 // It extends the built-in Error class, meaning it inherits normal error behavior (like message and stack).
