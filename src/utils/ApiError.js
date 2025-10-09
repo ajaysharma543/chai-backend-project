@@ -23,19 +23,13 @@ export {ApiError}
 
 
 // class ApiError extends Error { ... }
-
 // You’re creating a custom class called ApiError.
-
 // It extends the built-in Error class, meaning it inherits normal error behavior (like message and stack).
-
 // This allows you to add your own properties (like statusCode, success, etc.) for API-specific error responses.
 
 // 🟩 constructor(...)
-
 // The constructor runs whenever you create a new instance of this class.
-
 // It takes four parameters:
-
 // (statusCode, message = "Something went wrong", errors = [], stack = "")
 
 
