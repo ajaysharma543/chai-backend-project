@@ -84,10 +84,6 @@ security
 | **HEAD**    | Get only headers, not the body              | Check if a resource exists or get metadata |
 | **OPTIONS** | Get supported HTTP methods for a URL        | Useful for CORS preflight requests         |
 
-
-
-
-
 🔹 Categories of HTTP Status Codes
 Class	Range	Meaning
 1xx	100–199	Informational — request received, continuing process
