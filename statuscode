@@ -1,0 +1,33 @@
+Sure! HTTP status codes are three-digit numbers sent by the server in response to a client’s request. They indicate what happened with the request — whether it succeeded, failed, or needs further action.
+
+🔹 Categories of HTTP Status Codes
+Class	Range	Meaning
+1xx	100–199	Informational — request received, continuing process
+2xx	200–299	Success — request was successfully processed
+3xx	300–399	Redirection — further action needed (e.g., URL redirect)
+4xx	400–499	Client Error — problem with the request
+5xx	500–599	Server Error — server failed to fulfill a valid request
+🔹 Common HTTP Status Codes
+✅ Success (2xx)
+Code	Meaning	Example
+200 OK	Request succeeded	GET a webpage
+201 Created	Resource successfully created	POST a new user
+204 No Content	Request succeeded but no data returned	DELETE a resource
+🔄 Redirection (3xx)
+Code	Meaning	Example
+301 Moved Permanently	URL permanently moved	Redirect old page to new page
+302 Found	URL temporarily moved	Temporary redirect
+304 Not Modified	Cached version can be used	No changes since last request
+⚠️ Client Error (4xx)
+Code	Meaning	Example
+400 Bad Request	Invalid request syntax	Sending malformed JSON
+401 Unauthorized	Authentication required	Accessing a protected route without token
+403 Forbidden	Authenticated but no permission	Trying to delete someone else’s account
+404 Not Found	Resource does not exist	GET /users/999
+429 Too Many Requests	Rate limit exceeded	Too many API requests in short time
+❌ Server Error (5xx)
+Code	Meaning	Example
+500 Internal Server Error	Generic server error	Something went wrong on the server
+502 Bad Gateway	Server received invalid response from upstream server	Load balancer issue
+503 Service Unavailable	Server temporarily unavailable	Maintenance or overload
+504 Gateway Timeout	Upstream server didn’t respond in time	Slow API response
