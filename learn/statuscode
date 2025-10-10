@@ -31,3 +31,11 @@ Code	Meaning	Example
 502 Bad Gateway	Server received invalid response from upstream server	Load balancer issue
 503 Service Unavailable	Server temporarily unavailable	Maintenance or overload
 504 Gateway Timeout	Upstream server didn’t respond in time	Slow API response
+
+| Feature         | HTTP          | HTTPS                              |
+| --------------- | ------------- | ---------------------------------- |
+| Security        | Not secure    | Encrypted (secure)                 |
+| Port            | 80            | 443                                |
+| Data Protection | None          | Safe from interception & tampering |
+| SEO             | No preference | Preferred by search engines        |
+| Use             | Public data   | Sensitive/private data             |

@@ -1,0 +1,121 @@
+🔹 1. HTTP (Hypertext Transfer Protocol)
+
+Definition: HTTP is the protocol used by browsers and servers to communicate and transfer data (like web pages, images, videos).
+
+URL Prefix: http://example.com
+
+Port: Default port 80
+
+Security: Not secure — data is sent in plain text, so it can be intercepted by hackers.
+
+Example:
+If you submit a password on an HTTP site, it can be easily intercepted.
+
+🔹 2. HTTPS (Hypertext Transfer Protocol Secure)
+
+Definition: HTTPS is HTTP with encryption. It uses SSL/TLS to secure the connection.
+
+URL Prefix: https://example.com
+
+Port: Default port 443
+
+Security:
+
+Encrypts data between browser and server (confidentiality)
+
+Ensures data is not tampered with (integrity)
+
+Verifies the server identity (authentication)
+
+Example:
+When you log in to a banking site using HTTPS, your password is encrypted and safe from eavesdroppers.
+
+| Feature     | HTTP                       | HTTPS                                |
+| ----------- | -------------------------- | ------------------------------------ |
+| Security    | None                       | Encrypted (SSL/TLS)                  |
+| Port        | 80                         | 443                                  |
+| URL Prefix  | http://                    | https://                             |
+| Data Safety | Vulnerable to interception | Safe from interception and tampering |
+| SEO Benefit | No                         | HTTPS is favored by Google           |
+commonly used headers by client
+
+
+| Header            | Purpose                                                                                  |
+| ----------------- | ---------------------------------------------------------------------------------------- |
+| `Accept`          | Specifies the media types the client can handle (e.g., `text/html`, `application/json`). |
+| `Accept-Language` | Preferred languages for the response (e.g., `en-US`).                                    |
+| `Content-Type`    | Type of data being sent to the server (e.g., `application/json`, `multipart/form-data`). |
+| `Authorization`   | Contains credentials for authentication (e.g., `Bearer <token>`).                        |
+| `User-Agent`      | Information about the client/browser making the request.                                 |
+| `Cookie`          | Sends stored cookies to the server.                                                      |
+| `Referer`         | URL of the page making the request.                                                      |
+
+commonly used headers by server
+| Header                        | Purpose                                                                       |
+| ----------------------------- | ----------------------------------------------------------------------------- |
+| `Content-Type`                | Type of data being returned (e.g., `text/html`, `application/json`).          |
+| `Content-Length`              | Size of the response body in bytes.                                           |
+| `Set-Cookie`                  | Instructs the client to store a cookie.                                       |
+| `Cache-Control`               | Instructions for caching (e.g., `no-cache`, `max-age=3600`).                  |
+| `Expires`                     | Expiration date/time for caching.                                             |
+| `Location`                    | URL for redirection (used with 3xx responses).                                |
+| `WWW-Authenticate`            | Used when authentication is required (prompts client to provide credentials). |
+| `Access-Control-Allow-Origin` | Used in **CORS** to specify which domains can access the resource.            |
+
+security
+
+| Header                            | Purpose                                                         |
+| --------------------------------- | --------------------------------------------------------------- |
+| `Strict-Transport-Security`       | Forces HTTPS connections (HSTS).                                |
+| `X-Content-Type-Options: nosniff` | Prevents MIME type sniffing.                                    |
+| `X-Frame-Options`                 | Prevents clickjacking by restricting embedding in iframes.      |
+| `Content-Security-Policy`         | Controls what resources can be loaded on a page (prevents XSS). |
+
+
+ HTTP methods — these are sometimes called HTTP verbs. They indicate what action the client wants to perform on the server.
+
+ | Method      | Purpose                                     | Example Use                                |
+| ----------- | ------------------------------------------- | ------------------------------------------ |
+| **GET**     | Retrieve data from the server               | Fetch a webpage, get user info             |
+| **POST**    | Send data to the server to create something | Submit a form, create a new user           |
+| **PUT**     | Update existing resource completely         | Update all fields of a user profile        |
+| **PATCH**   | Update part of an existing resource         | Change only the user’s email               |
+| **DELETE**  | Remove a resource from the server           | Delete a user account                      |
+| **HEAD**    | Get only headers, not the body              | Check if a resource exists or get metadata |
+| **OPTIONS** | Get supported HTTP methods for a URL        | Useful for CORS preflight requests         |
+
+
+
+
+
+🔹 Categories of HTTP Status Codes
+Class	Range	Meaning
+1xx	100–199	Informational — request received, continuing process
+2xx	200–299	Success — request was successfully processed
+3xx	300–399	Redirection — further action needed (e.g., URL redirect)
+4xx	400–499	Client Error — problem with the request
+5xx	500–599	Server Error — server failed to fulfill a valid request
+🔹 Common HTTP Status Codes
+✅ Success (2xx)
+Code	Meaning	Example
+200 OK	Request succeeded	GET a webpage
+201 Created	Resource successfully created	POST a new user
+204 No Content	Request succeeded but no data returned	DELETE a resource
+🔄 Redirection (3xx)
+Code	Meaning	Example
+301 Moved Permanently	URL permanently moved	Redirect old page to new page
+302 Found	URL temporarily moved	Temporary redirect
+304 Not Modified	Cached version can be used	No changes since last request
+⚠️ Client Error (4xx)
+Code	Meaning	Example
+400 Bad Request	Invalid request syntax	Sending malformed JSON
+401 Unauthorized	Authentication required	Accessing a protected route without token
+403 Forbidden	Authenticated but no permission	Trying to delete someone else’s account
+404 Not Found	Resource does not exist	GET /users/999
+429 Too Many Requests	Rate limit exceeded	Too many API requests in short time
+❌ Server Error (5xx)
+Code	Meaning	Example
+500 Internal Server Error	Generic server error	Something went wrong on the server
+502 Bad Gateway	Server received invalid response from upstream server	Load balancer issue
+503 Service Unavailable	Server temporarily unavailable	Maintenance or overload
+504 Gateway Timeout	Upstream server didn’t respond in time	Slow API response
