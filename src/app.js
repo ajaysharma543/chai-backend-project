@@ -15,10 +15,6 @@ app.use(cookieParser())
 
 import router from './routes/user.routes.js'
 
-app.get("/", (req, res) => {
-res.send("🚀 Server is working fine!");
-});
-
 app.use("/api/v1/users", router);
 export {app};
 // cors
