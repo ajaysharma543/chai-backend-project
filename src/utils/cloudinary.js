@@ -20,7 +20,7 @@ const Uploadincloudnary = async(localfilepath) => {
                 // fs.unlinkSync(localfilepath)
         return response;
     } catch (error) {
-        fs.unlinkSync(localfilepath)// remove the locally saved temporary file as the upload operation got failed
+        fs.unlinkSync(localfilepath) // remove the locally saved temporary file as the upload operation got failed
         //  this is a method
         return null
     }
