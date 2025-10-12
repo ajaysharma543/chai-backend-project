@@ -6,6 +6,9 @@ import { Uploadincloudnary } from '../utils/cloudinary.js';
 
 const registerUser = asyncHandler( async (req, res) => {
 
+    console.log("req.files.avatar:", req.files?.avatar);
+console.log("req.files.coverImage:", req.files?.coverImage);
+
     // get user details from frontend
     // validation - not empty
     // check if user already exists: username, email
@@ -18,26 +21,27 @@ const registerUser = asyncHandler( async (req, res) => {
 
     
     const {fullName, email, username, password } = req.body;
-    console.log("email: ", email);
+    console.log("email: ", fullName, email, username, password);
 
     if(  [fullName, email, username, password].some((field) => field?.trim() === "") ) {
         throw new ApiError(400, "fullname is required")
     }
 
-    const Existeduser =  User.findOne({
+    const Existeduser = await  User.findOne({
         $or : [{username}, {email}]
     })
 
     if(Existeduser) {
         throw new ApiError(409 , "user with same email and password already exists")
     }
+    
+const avatarLocalPath = req.files?.avatar?.[0]?.path;
+const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
 
-    const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar file is required");
+}
 
-    if (!avatarLocalPath) {
-        throw new ApiError(400, "Avatar file is required")
-    }
 
     const avatar = await Uploadincloudnary(avatarLocalPath);
     const coverImage = await Uploadincloudnary(coverImageLocalPath);
@@ -46,7 +50,7 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new ApiError(400, "Avatar file is required")
     }
 
-    const user = User.create({
+    const user =  await User.create({
         fullName,
         avatar: avatar.url,
         coverImage: coverImage?.url || "",
