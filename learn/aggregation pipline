@@ -1,0 +1,32 @@
+[
+  {
+    "$lookup": {
+      "from": "author",
+      "localField": "author_id",
+      "foreignField": "id",
+      "as": "author_details"
+    }
+  },
+  {
+    $addFields: {
+      author_details: {
+        $arrayElemAt : ["$author_details", 0]
+        },
+    }
+  }
+]
+
+to connect one fileds to other and also inherit from others;
+
+| Stage              | Purpose                                              |
+| ------------------ | ---------------------------------------------------- |
+| `$match`           | Filters documents (like SQL `WHERE`)                 |
+| `$group`           | Groups data (like SQL `GROUP BY`)                    |
+| `$sort`            | Sorts the results                                    |
+| `$project`         | Selects or reshapes fields (like SQL `SELECT`)       |
+| `$limit` / `$skip` | Limits or skips a number of documents                |
+| `$lookup`          | Joins data from another collection (like SQL `JOIN`) |
+| `$unwind`          | Deconstructs array fields into multiple documents    |
+| `$count`           | Counts the number of documents in the pipeline       |
+| `$addFields`       | Adds new computed fields                             |
+| `$out`             | Writes the result into a new collection              |
