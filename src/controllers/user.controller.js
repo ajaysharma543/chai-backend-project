@@ -5,6 +5,7 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import {asyncHandler} from '../utils/asynchandler.js'
 import { Uploadincloudnary } from '../utils/cloudinary.js';
 import {v2 as cloudinary} from "cloudinary"
+import { deleteFromCloudinary } from "../utils/deletefromcloudinart.js";
 
 const generateAccessAndRefereshTokens  = async (userId) => {
     try {
@@ -268,9 +269,7 @@ const updateAccountDetails = asyncHandler(async(req, res) => {
         return res
     .status(200)
     .json(new ApiResponse(200, user, "Account details updated successfully"))
-    })
-
-
+})
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
     const avatarLocalPath = req.file?.path;
@@ -281,13 +280,9 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(404, "User not found");
     }
-    if (user.avatar) {
-        const parts = user.avatar.split("/");
-        const lastPart = parts[parts.length - 1]; // e.g., abc123.jpg
-        const publicId = lastPart.split(".")[0];   // abc123
-        await cloudinary.uploader.destroy(publicId);
-    }
-    const avatar = await Uploadincloudnary(avatarLocalPath);
+if (user.coverImage) {
+    await deleteFromCloudinary(user.coverImage);
+}    const avatar = await Uploadincloudnary(avatarLocalPath);
     if (!avatar?.url) {
         throw new ApiError(400, "Error while uploading avatar");
     }
@@ -298,48 +293,26 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
         new ApiResponse(200, user, "Avatar image updated successfully")
     );
 });
-
-const updateUserCoverImage  = asyncHandler(async(req, res) => {
+const updateUserCoverImage = asyncHandler(async (req, res) => {
     const coverLocalPath = req.file?.path;
 
-    if (!coverLocalPath) {
-        throw new ApiError(400, "Cover image file is missing");
-    }
+        if (!coverLocalPath) {
+    throw new ApiError(400, "Cover image file is missing");
+}
 
-    // 1️⃣ Get the user
-    const user = await User.findById(req.user?._id);
-    if (!user) {
-        throw new ApiError(404, "User not found");
-    }
+const user = await User.findById(req.user?._id);
+if (!user) throw new ApiError(404, "User not found");
 
-    // 2️⃣ Delete old cover image if it exists
-    if (user.coverImage) {
-        const parts = user.coverImage.split("/");
-        const lastPart = parts[parts.length - 1]; // e.g., abc123.jpg
-        const publicId = lastPart.split(".")[0];   // abc123
-        await cloudinary.uploader.destroy(publicId);
-    }
+if (user.coverImage) await deleteFromCloudinary(user.coverImage);
 
-    // 3️⃣ Upload new cover image
-    const coverImage = await Uploadincloudnary(coverLocalPath);
-    if (!coverImage?.url) {
-        throw new ApiError(400, "Error while uploading cover image");
-    }
+const coverImage = await Uploadincloudnary(coverLocalPath);
+if (!coverImage?.url) throw new ApiError(400, "Error while uploading cover image");
 
-    // 4️⃣ Update user document
-    user.coverImage = coverImage.url;
-    await user.save();
+user.coverImage = coverImage.url;
+await user.save();
 
-    console.log("Updated user:", user);
-
-    // 5️⃣ Send response
-    return res.status(200).json(
-        new ApiResponse(200, user, "Cover image updated successfully")
-    );
-})
-
-
-
+return res.status(200).json(new ApiResponse(200, user, "Cover image updated successfully"));
+});
 
 export {
     registerUser,
