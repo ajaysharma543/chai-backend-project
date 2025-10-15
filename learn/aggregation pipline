@@ -16,6 +16,24 @@
   }
 ]
 
+You have Users collection:
+
+{ "_id": "USER1001", "username": "john" }
+
+
+You have Subscriptions collection:
+
+{ "subscriber": "USER2001", "channel": "USER1001" }
+{ "subscriber": "USER2002", "channel": "USER1001" }
+
+from → the collection you want to join (subscriptions)
+
+localField → field in the current collection (User._id)
+
+foreignField → field in the other collection (subscriptions.channel)
+
+as → output array to store the joined documents
+
 to connect one fileds to other and also inherit from others;
 
 | Stage              | Purpose                                              |

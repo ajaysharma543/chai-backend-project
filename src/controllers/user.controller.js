@@ -348,6 +348,7 @@ const {username} = req.params;
 
         {
             $addFields: {
+                // $size counts array elements
                 subscribersCount: {
                     $size: "$subscribers"
                 },
@@ -357,6 +358,7 @@ const {username} = req.params;
                 isSubscribed: {
                     $cond: {
                         // in can find anyting in array and object and used to find or sort like things
+                        // $in is a query operator used to check if a value exists in an array or matches any value in a list.
                         if: {$in: [req.user?._id, "$subscribers.subscriber"]},
                         then: true,
                         else: false
