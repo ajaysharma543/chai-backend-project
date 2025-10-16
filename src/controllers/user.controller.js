@@ -154,23 +154,26 @@ const loginUser = asyncHandler (async (req,res) => {
     )
 })
 
-const logoutUser = asyncHandler (async (req, res) => {
-await User.findByIdAndUpdate(
-    req.user._id, {
-        $set : {
-    refreshToken : undefined
+const logoutUser = asyncHandler(async(req, res) => {
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $unset: {
+                refreshToken: 1 // this removes the field from document
+            }
+        },
+        {
+            new: true
         }
-    },
-    {
-    new: true
-    }
-)
-const options = {
+    )
+
+    const options = {
         httpOnly: true,
         secure: true
     }
 
-    return res.status(200)
+    return res
+    .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "User logged Out"))
@@ -284,7 +287,8 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     }
 if (user.coverImage) {
     await deleteFromCloudinary(user.coverImage);
-}    const avatar = await Uploadincloudnary(avatarLocalPath);
+}    
+const avatar = await Uploadincloudnary(avatarLocalPath);
     if (!avatar?.url) {
         throw new ApiError(400, "Error while uploading avatar");
     }
