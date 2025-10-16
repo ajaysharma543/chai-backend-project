@@ -7,6 +7,7 @@ import { Uploadincloudnary } from '../utils/cloudinary.js';
 import {v2 as cloudinary} from "cloudinary"
 import { deleteFromCloudinary } from "../utils/deletefromcloudinart.js";
 import mongoose from "mongoose";
+import { Subscription } from "../models/subscription.model.js";
 
 const generateAccessAndRefereshTokens  = async (userId) => {
     try {
@@ -322,13 +323,16 @@ const {username} = req.params;
     if (!username?.trim()) {
         throw new ApiError(400, "username is missing")
     }
+console.log("Param username:", username);
+const userExists = await User.findOne({ username });
+console.log("User in DB:", userExists);
 
     const Channel = await User.aggregate([
-        {
-            $match : {
-                username: username?.toLowerCase()
-            },
-        },
+    {
+$match: {
+        username: { $regex: new RegExp(`^${username}$`, "i") }
+}
+},
         {
             $lookup: {
                 from: "subscriptions",
@@ -447,6 +451,35 @@ const getWatchHistory = asyncHandler(async(req, res) => {
         )
     )
 })
+const subscribeToChannel = asyncHandler(async (req, res) => {
+const subscribedId = req.user._id;      // person who subscribes
+const channelId = req.params.channelId; // ✅ matches route param
+
+if (subscribedId.toString() === channelId) {
+throw new ApiError(400, "You cannot subscribe to yourself");
+}
+
+const existing = await Subscription.findOne({
+subscriber: subscribedId,
+channel: channelId,
+});
+
+if (existing) {
+throw new ApiError(400, "Already subscribed");
+}
+
+const subscription = await Subscription.create({
+subscriber: subscribedId,
+channel: channelId,
+});
+
+res
+.status(200)
+.json(new ApiResponse(200, subscription, "Subscribed successfully"));
+});
+
+
+
 
 export {
     registerUser,
@@ -460,4 +493,5 @@ export {
     updateUserCoverImage,
     getUserChannelProfile,
     getWatchHistory,
+    subscribeToChannel,
     }
