@@ -1,0 +1,9 @@
+| Stage | MongoDB Stage         | Purpose                                |
+| ----- | --------------------- | -------------------------------------- |
+| 1     | `$search`             | Text search by title/description       |
+| 2     | `$match`              | Filter by owner (optional)             |
+| 3     | `$match`              | Only published videos                  |
+| 4     | `$sort`               | Sort results (custom or by newest)     |
+| 5     | `$lookup`             | Join user info from `users` collection |
+| 6     | `$unwind`             | Flatten owner array                    |
+| 7     | `aggregatePaginate()` | Apply pagination                       |
