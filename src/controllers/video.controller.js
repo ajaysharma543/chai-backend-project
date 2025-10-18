@@ -13,7 +13,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
     const pipeline = [];
 
-    // 1. $search stage if query exists
+    // 1. $search for fuzzy match if query exists
     if (query) {
         pipeline.push({
             $search: {
@@ -24,28 +24,28 @@ const getAllVideos = asyncHandler(async (req, res) => {
                 }
             }
         });
-
-        pipeline.push({
-    $match: { title: query } // exact match
-  });
     }
 
-    // 2. Always filter published videos
-    pipeline.push({
-        $match: { isPublished: true }
-    });
+    // 2. Match stage to filter by published, owner, and exact title/description
+    const matchFilter = { isPublished: true };
 
-    // 3. Filter by owner if userId provided
+    if (query) {
+        matchFilter.$or = [
+            { title: query }, 
+            { description: query }
+        ];
+    }
+
     if (userId) {
         if (!isValidObjectId(userId)) {
             throw new ApiError(400, "Invalid userId");
         }
-        pipeline.push({
-            $match: { owner: new mongoose.Types.ObjectId(userId) }
-        });
+        matchFilter.owner = new mongoose.Types.ObjectId(userId);
     }
 
-    // 4. Sorting
+    pipeline.push({ $match: matchFilter });
+
+    // 3. Sorting
     if (sortBy && sortType) {
         pipeline.push({
             $sort: { [sortBy]: sortType === "asc" ? 1 : -1 }
@@ -54,7 +54,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
         pipeline.push({ $sort: { createdAt: -1 } });
     }
 
-    // 5. Lookup owner details
+    // 4. Lookup owner details
     pipeline.push(
         {
             $lookup: {
@@ -62,26 +62,22 @@ const getAllVideos = asyncHandler(async (req, res) => {
                 localField: "owner",
                 foreignField: "_id",
                 as: "ownerdetails",
-                pipeline: [
-                    { $project: { username: 1, "avatar.url": 1 } }
-                ]
+                pipeline: [{ $project: { username: 1, "avatar.url": 1 } }]
             }
         },
         { $unwind: "$ownerdetails" }
     );
 
+    // 5. Aggregate paginate
     const videoAggregate = Video.aggregate(pipeline);
-
-    const options = {
-        page: parseInt(page, 10),
-        limit: parseInt(limit, 10)
-    };
+    const options = { page: parseInt(page, 10), limit: parseInt(limit, 10) };
     const video = await Video.aggregatePaginate(videoAggregate, options);
 
     return res
         .status(200)
         .json(new ApiResponse(200, video, "Videos fetched successfully"));
 });
+
 
 const publishAVideo = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
