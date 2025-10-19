@@ -3,10 +3,10 @@ import { ApiError } from "../utils/ApiError.js";
 import { deleteOnCloudinary, Uploadincloudnary } from "../utils/cloudinary.js";
 import { Video } from "../models/video.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { asyncHandler } from "../utils/asynchandler.js";
 import { User } from "../models/user.model.js";
 import { Like } from "../models/likes.model.js";
 import { Comment } from "../models/comment.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
     //TOdo: get all videos based on query, sort, pagination
 const getAllVideos = asyncHandler(async (req, res) => {
@@ -274,6 +274,7 @@ if (!alreadyWatched) {
   await Video.findByIdAndUpdate(videoId,
     { $inc: { views: 1 } },
   { new: true }
+  
   );
 }
 

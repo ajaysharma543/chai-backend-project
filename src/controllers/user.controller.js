@@ -2,11 +2,10 @@ import jwt from "jsonwebtoken"
 import { User } from '../models/user.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
-import {asyncHandler} from '../utils/asynchandler.js'
 import { deleteOnCloudinary, Uploadincloudnary } from '../utils/cloudinary.js';
 import {v2 as cloudinary} from "cloudinary"
 import mongoose from "mongoose";
-import { Subscription } from "../models/subscription.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const generateAccessAndRefereshTokens  = async (userId) => {
     try {
@@ -499,34 +498,6 @@ const getWatchHistory = asyncHandler(async(req, res) => {
         )
     )
 })
-const subscribeToChannel = asyncHandler(async (req, res) => {
-const subscribedId = req.user._id;      // person who subscribes
-const channelId = req.params.channelId; // ✅ matches route param
-
-if (subscribedId.toString() === channelId) {
-throw new ApiError(400, "You cannot subscribe to yourself");
-}
-
-const existing = await Subscription.findOne({
-subscriber: subscribedId,
-channel: channelId,
-});
-
-if (existing) {
-throw new ApiError(400, "Already subscribed");
-}
-
-const subscription = await Subscription.create({
-subscriber: subscribedId,
-channel: channelId,
-});
-
-res
-.status(200)
-.json(new ApiResponse(200, subscription, "Subscribed successfully"));
-});
-
-
 
 
 export {
@@ -541,5 +512,4 @@ export {
     updateUserCoverImage,
     getUserChannelProfile,
     getWatchHistory,
-    subscribeToChannel,
     }
