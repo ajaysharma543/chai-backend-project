@@ -90,7 +90,7 @@ if (!avatarLocalPath) {
 
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
-        // thats the syntax which i want to remove
+        // thats the syntax which i don't want to give the return
     )
 
         if (!createdUser) {

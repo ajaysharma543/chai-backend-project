@@ -1,0 +1,49 @@
+| Operator       | Description                                  | Example                                    |
+| -------------- | -------------------------------------------- | ------------------------------------------ |
+| `$set`         | Sets the value of a field                    | `{ $set: { status: "active" } }`           |
+| `$unset`       | Removes a field                              | `{ $unset: { tempField: "" } }`            |
+| `$inc`         | Increments/decrements a numeric field        | `{ $inc: { views: 1 } }`                   |
+| `$mul`         | Multiplies a field by a value                | `{ $mul: { price: 1.1 } }`                 |
+| `$rename`      | Renames a field                              | `{ $rename: { oldName: "newName" } }`      |
+| `$min`         | Updates field only if new value is smaller   | `{ $min: { score: 50 } }`                  |
+| `$max`         | Updates field only if new value is larger    | `{ $max: { score: 100 } }`                 |
+| `$currentDate` | Sets field to current date/time              | `{ $currentDate: { lastModified: true } }` |
+| `$addToSet`    | Adds value to array only if it doesn’t exist | `{ $addToSet: { tags: "new" } }`           |
+| `$push`        | Adds value to array                          | `{ $push: { tags: "new" } }`               |
+| `$pull`        | Removes matching value from array            | `{ $pull: { tags: "old" } }`               |
+| `$pop`         | Removes first or last element of array       | `{ $pop: { comments: -1 } }`               |
+
+| Stage/Operator                  | Description                     | Example                                                                                        |
+| ------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `$match`                        | Filters documents (like `find`) | `{ $match: { status: "active" } }`                                                             |
+| `$project`                      | Selects/reshapes fields         | `{ $project: { name: 1, age: 1 } }`                                                            |
+| `$unset`                        | Removes fields in aggregation   | `{ $unset: ["tempField", "oldField"] }`                                                        |
+| `$addFields`                    | Adds new fields                 | `{ $addFields: { fullName: { $concat: ["$first", " ", "$last"] } } }`                          |
+| `$group`                        | Groups documents                | `{ $group: { _id: "$category", total: { $sum: 1 } } }`                                         |
+| `$sort`                         | Sorts documents                 | `{ $sort: { createdAt: -1 } }`                                                                 |
+| `$limit`                        | Limits number of docs           | `{ $limit: 10 }`                                                                               |
+| `$skip`                         | Skips N docs                    | `{ $skip: 20 }`                                                                                |
+| `$lookup`                       | Joins another collection        | `{ $lookup: { from: "users", localField: "owner", foreignField: "_id", as: "ownerDetails" } }` |
+| `$unwind`                       | Deconstructs array field        | `{ $unwind: "$tags" }`                                                                         |
+| `$count`                        | Counts documents                | `{ $count: "totalDocs" }`                                                                      |
+| `$replaceRoot` / `$replaceWith` | Replace root document           | `{ $replaceRoot: { newRoot: "$data" } }`                                                       |
+| `$facet`                        | Multiple pipelines in one       | `{ $facet: { paginatedResults: [...], totalCount: [...] } }`                                   |
+| `$sample`                       | Random sample                   | `{ $sample: { size: 5 } }`                                                                     |
+| `$sortByCount`                  | Groups and counts sorted        | `{ $sortByCount: "$category" }`                                                                |
+
+
+| Operator                      | Description                 | Example                                                 |
+| ----------------------------- | --------------------------- | ------------------------------------------------------- |
+| `$eq`                         | Equal                       | `{ age: { $eq: 25 } }`                                  |
+| `$ne`                         | Not equal                   | `{ age: { $ne: 25 } }`                                  |
+| `$gt`                         | Greater than                | `{ age: { $gt: 18 } }`                                  |
+| `$gte`                        | Greater than or equal       | `{ age: { $gte: 18 } }`                                 |
+| `$lt`                         | Less than                   | `{ age: { $lt: 50 } }`                                  |
+| `$lte`                        | Less than or equal          | `{ age: { $lte: 50 } }`                                 |
+| `$in`                         | Field in array of values    | `{ status: { $in: ["active", "pending"] } }`            |
+| `$nin`                        | Field not in array          | `{ status: { $nin: ["deleted"] } }`                     |
+| `$exists`                     | Field exists or not         | `{ tempField: { $exists: true } }`                      |
+| `$type`                       | Match by BSON type          | `{ age: { $type: "int" } }`                             |
+| `$regex`                      | Pattern match               | `{ name: { $regex: /^Ajay/, $options: "i" } }`          |
+| `$expr`                       | Use aggregation expressions | `{ $expr: { $gt: ["$score", 50] } }`                    |
+| `$and`, `$or`, `$not`, `$nor` | Logical operations          | `{ $or: [{ age: { $lt: 18 } }, { age: { $gt: 50 } }] }` |

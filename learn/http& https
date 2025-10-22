@@ -37,9 +37,8 @@ When you log in to a banking site using HTTPS, your password is encrypted and sa
 | URL Prefix  | http://                    | https://                             |
 | Data Safety | Vulnerable to interception | Safe from interception and tampering |
 | SEO Benefit | No                         | HTTPS is favored by Google           |
+
 commonly used headers by client
-
-
 | Header            | Purpose                                                                                  |
 | ----------------- | ---------------------------------------------------------------------------------------- |
 | `Accept`          | Specifies the media types the client can handle (e.g., `text/html`, `application/json`). |
