@@ -10,16 +10,17 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
     //TOdo: get all videos based on query, sort, pagination
 const getAllVideos = asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
+    const { page = 1, limit = 10, query,title,description, sortBy, sortType, userId } = req.query;
     const pipeline = [];
+    const searchQuery = query || title ||description;
 
     // 1. $search stage for text/fuzzy match (only if query exists)
-    if (query) {
+    if (searchQuery) {
         pipeline.push({
             $search: {
                 index: "search-videos",
                 text: {
-                    query,
+                    query : searchQuery,
                     path: ["title", "description"],
                 },
             },
